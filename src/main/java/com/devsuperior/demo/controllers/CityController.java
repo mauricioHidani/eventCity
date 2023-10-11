@@ -1,4 +1,4 @@
-package com.devsuperior.demo.controllers.handlers;
+package com.devsuperior.demo.controllers;
 
 import com.devsuperior.demo.dto.CityDTO;
 import com.devsuperior.demo.services.CityService;
