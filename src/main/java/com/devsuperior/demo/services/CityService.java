@@ -5,6 +5,7 @@ import com.devsuperior.demo.entities.City;
 import com.devsuperior.demo.repositories.CityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Comparator;
@@ -32,5 +33,10 @@ public class CityService {
         city.setId(repository.save(saved).getId());
 
         return city;
+    }
+
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public void delete(Long id) {
+        repository.deleteById(id);
     }
 }
