@@ -1,6 +1,7 @@
 package com.devsuperior.demo.controllers.handlers;
 
 import com.devsuperior.demo.dto.ExceptionResponse;
+import com.devsuperior.demo.services.exceptions.DatabaseException;
 import com.devsuperior.demo.services.exceptions.NotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,23 @@ public class ExceptionHandlerController {
     public ResponseEntity<ExceptionResponse> resourceNotFound(NotFoundException e,
                                                               HttpServletRequest req) {
         HttpStatus status = HttpStatus.NOT_FOUND;
+        ExceptionResponse res = ExceptionResponse
+                .builder()
+                .timestamp(Instant.now(Clock.systemUTC()))
+                .status(status.value())
+                .error(e.getMessage())
+                .path(req.getRequestURI())
+                .build();
+
+        return ResponseEntity
+                .status(status)
+                .body(res);
+    }
+
+    @ExceptionHandler(DatabaseException.class)
+    public ResponseEntity<ExceptionResponse> database(DatabaseException e,
+                                                      HttpServletRequest req) {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
         ExceptionResponse res = ExceptionResponse
                 .builder()
                 .timestamp(Instant.now(Clock.systemUTC()))
